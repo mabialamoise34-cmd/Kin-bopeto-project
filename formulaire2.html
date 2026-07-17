@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/formulaire2.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    <title>Kin bopete</title>
+
+</head>
+<body>
+    <form action="">
+        <h2>INFORMATION SUR LE LIEU</h2>
+        <section class="gridContainer">
+           
+            <div style="grid-area: a;">
+                <label for="nom">Votre nom</label>
+                <input  type="text" id="nom" placeholder="benedicte" required>
+            </div>
+        
+            <div style="grid-area: b;">
+                <label for="numero">Téléphone</label>
+                <input type="text" id="numero" placeholder="+243 8XXXXXXXXX"required>
+            </div>
+
+            <div style="grid-area: c;">
+                <label for="description">Description du problème </label>
+                <textarea placeholder="Decrivez en detail la situation..." id="description" cols="30" rows="10"required></textarea>
+            </div>
+        
+            <div style="grid-area: d;">
+                <label for="niveau">Niveau de salubrité</label>
+                <select name="" id="niveau" required>
+                    <option value="">Selectionnez le niveau</option>
+                    <option value="niveau 1">Niveau 1</option>
+                    <option value="niveau 2">Niveau 2</option>
+                    <option value="niveau 3">Niveau 3</option>
+                    <option value="niveau 4">Niveau 4</option>
+                    <option value="niveau 5">Niveau 5</option>
+                    <option value="niveau 6">Niveau 6</option>
+                
+                </select>
+            </div>
+
+            <div style="grid-area: e;">
+                <label for="">Ajouter une photo (facultatif)</label>
+                <input type="file" id="file" accept="image/*">
+            </div>
+
+            <div style="grid-area: f;" class="">
+                <label for="local">localisation</label>
+                <div id="map"></div>
+            </div>
+        
+            <div style="grid-area: g;">
+                <label for="adresse">Adresse de l'endroit à signaler</label>
+                <input type="text" id="adresse" placeholder="ex: Avenue de la revolution, Kinshasa" required>
+            </div>
+
+            <div class="buttomContainer" >
+                <button type="submit" id="validation">Envoyer le signalement</button>
+            </div>
+            
+        </section>
+        
+       
+    </form>
+    <footer style="width: 100%; height: 100px;">
+         <div class="footerContainerElement">
+            <div> <img src="./image/shield-halved-solid.png" alt="" class="footerIcon"></div>
+            
+            <div> 
+                <p>Vos données sont sécurisées</p> 
+                <p> et contidentielles</p>
+            </div>
+
+        </div>
+        
+        <div class="footerContainerElement">
+            <div><img src="./image/location-dot-solid.png" alt="" class="footerIcon"></div>
+            
+            <div> 
+                <p>Géolocalisation pour une</p>
+                <p>intervention rapide</p>
+            </div>
+
+        </div>
+        
+        <div class="footerContainerElement">
+            <div><img src="./image/alarm-clock-regular.png" alt="" class="footerIcon"></div>
+            
+            <div id="message"> 
+                <p class="success-message">✅Signalement envoyé</p>
+                <p class="success-message">Nous interviendrons dans les plus brefs délais.</p>
+            </div>
+
+        </div>
+
+    </footer>
+     <script>
+
+            //VALIDATION DU FORMULAIRE
+            
+            const buttonValidation = document.getElementById("validation")
+            const champs = document.querySelectorAll("input,textarea,select");
+            const message = document.getElementById("message")
+
+            buttonValidation.addEventListener("click", (event)=>{
+                event.preventDefault()
+                for (i=0;i<champs.length;i++) {
+                
+                    if (champs[i].value.trim() === "") {
+                        console.log(message)
+                        alert("Veuillez remplir tous les champs.");
+                        return;
+                    }
+                }
+                
+                message.style.display = "block";
+                setTimeout(function () {
+                    document.querySelector("form").submit();
+                    window.location.replace("index.html");
+                }, 4000);
+
+                
+            })
+
+
+
+            //LOCALISATION
+
+            let map = L.map('map');
+            map.setView([-4.3246, 15.3122], 14);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            navigator.geolocation.getCurrentPosition(success , error);
+
+
+            function success(position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                const accuracy = position.coords.accuracy;
+                
+                map.flyTo([lat, lng], 17, {
+                    animated: true,
+                    duration: 1.5
+                });
+                
+                L.marker([lat, lng]).addTo(map);
+                L.marker([lat, lng]).addTo(map)
+                .bindPopup("Assurez vous d'etre à l'endroit exact  ou à proximité de l'endroit signalement avant d'envoyer le formulaire.")
+                .openPopup();
+
+                L.circle([lat, lng], { radius: accuracy }).addTo(map);
+               
+            }
+
+            function error(err) {
+                if (err.code === 1) {
+                    alert("Veuillez autoriser l'accès à votre position pour signaler un endroit insalubre.");
+                } else {
+                    alert("Impossible de récupérer votre position.");
+                }
+            }         
+           
+    </script>
+    
+</body>
+</html>

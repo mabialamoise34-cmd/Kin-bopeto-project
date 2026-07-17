@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/formulaire1.css">
+    <title>Kin bopeto</title>
+</head>
+<body>
+    <header>
+        <div class="logo"><img src="./image/MON LOGO.PNG" alt="LOGO" class="logo"></div>
+        <nav >
+            <ul class="nav">
+                <li class="nav1"><a href="index.html">Accueil</a></li>
+                <li class="nav2"><a href="abonn.html">Mon abonnement</a></li>
+                <li class="nav3"><a href="signe.html">Signalement</a></li>
+            </ul>
+        </nav> 
+    </header>
+
+    
+   <main>
+     <form class="form">
+        <h2>Paiement</h2>
+        <div class="inputContainer ">
+            <label>Nom du titulaire</label>
+            <input type="text" required>
+        </div>
+         <div class="inputContainer ">
+            <label>Adresse</label>
+            <input type="text" required>
+        </div>
+        <div class="inputContainer ">
+            <label>Numéro de carte</label>
+            <input type="text" maxlength="11" required>
+        </div>
+        <div class="flexElement">
+            <div class="inputContainer ">
+                <label>Expiration</label>
+                <input type="text" placeholder="MM/AA" maxlength="5" required>
+            </div>
+            <div class="inputContainer ">
+                <label>CVV</label>
+                <input type="password" maxlength="4" required>
+            </div>
+        </div>
+        <button type="submit" id="validation">Payer</button>
+        <p id="message">✅ Paiement effectué avec succès !</p>
+    </form>
+    <script>
+            
+            const buttonValidation = document.getElementById("validation")
+            const champs = document.querySelectorAll("input");
+            const message = document.getElementById("message")
+
+            buttonValidation.addEventListener("click", (event)=>{
+                 event.preventDefault()
+
+                for (i=0;i<champs.length;i++) {
+                
+                    if (champs[i].value.trim() === "") {
+                        alert("Veuillez remplir tous les champs.");
+                        return;
+                    }
+                }
+                
+                message.style.display = "block";
+                setTimeout(function () {
+                    document.querySelector("form").submit();
+                    window.location.replace("index.html");
+                }, 3000);
+
+                
+            })
+           
+    </script>
+   </main>
+
+</body>
+</html>
