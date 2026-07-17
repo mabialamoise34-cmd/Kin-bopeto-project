@@ -6,7 +6,9 @@
 }
 
 body{
-     background: linear-gradient(to left,#f5f7fa,#32c72a6c);
+     background-image: url(../image/backgroud\ fromulaire2.jpeg);
+     background-size: cover;
+     background-position: center;
 }
 
 
@@ -36,10 +38,6 @@ header{
   
    width: 180px;
    padding-top: 1.3%;
-   
-    
-   
-  
 }
 
 
