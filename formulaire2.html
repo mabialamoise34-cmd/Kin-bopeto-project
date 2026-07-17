@@ -24,12 +24,12 @@
            
             <div style="grid-area: a;">
                 <label for="nom">Votre nom</label>
-                <input  type="text" id="nom" placeholder="benedicte" required>
+                <input  type="text" id="nom" placeholder="benedicte" pattern="[A-Za-z\s]{2,40}" maxlength="40"  required>
             </div>
         
             <div style="grid-area: b;">
                 <label for="numero">Téléphone</label>
-                <input type="text" id="numero" placeholder="+243 8XXXXXXXXX"required>
+                <input type="text" id="numero" pattern="0[0-9]{9}" maxlength="10" placeholder="08XXXXXXXXX"required>
             </div>
 
             <div style="grid-area: c;">
@@ -125,7 +125,16 @@
                     if (champs[i].value.trim() === "") {
                         console.log(message)
                         alert("Veuillez remplir tous les champs.");
-                        return;
+                        return;    
+
+                    }
+                    const patternAttr = champs[i].getAttribute("pattern");
+                    if (patternAttr) {
+                        const regle = new RegExp(patternAttr);
+                        if (!regle.test(champs[i].value)) {
+                            alert("Veuillez remplir correctement le champ : " + champs[i].previousElementSibling.textContent);
+                            return;
+                        }
                     }
                 }
                 

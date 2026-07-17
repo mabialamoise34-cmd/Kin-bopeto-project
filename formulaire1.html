@@ -24,24 +24,24 @@
         <h2>Paiement</h2>
         <div class="inputContainer ">
             <label>Nom du titulaire</label>
-            <input type="text" required>
+            <input type="text" required pattern="[A-Za-z\s]{2,40}" maxlength="40" title="Veuillez entrer uniquement des lettres et des espaces.">
         </div>
          <div class="inputContainer ">
             <label>Adresse</label>
-            <input type="text" required>
+            <input type="text" placeholder="ex: Avenue de la revolution, Kinshasa" required>
         </div>
         <div class="inputContainer ">
             <label>Numéro de carte</label>
-            <input type="text" maxlength="11" required>
+            <input type="text" required pattern="[0-9]{11}" maxlength="11">
         </div>
         <div class="flexElement">
             <div class="inputContainer ">
                 <label>Expiration</label>
-                <input type="text" placeholder="MM/AA" maxlength="5" required>
+                <input type="text" placeholder="MM/AA" maxlength="5" required pattern="[0-9]{2}/[0-9]{2}">
             </div>
             <div class="inputContainer ">
                 <label>CVV</label>
-                <input type="password" maxlength="4" required>
+                <input type="password"maxlength="4" required pattern="[0-9]{3,4}">
             </div>
         </div>
         <button type="submit" id="validation">Payer</button>
@@ -57,12 +57,27 @@
                  event.preventDefault()
 
                 for (i=0;i<champs.length;i++) {
+
+                    //verification des input s'il sont bin remplis
                 
                     if (champs[i].value.trim() === "") {
                         alert("Veuillez remplir tous les champs.");
                         return;
                     }
+                    
+                    //verification du format des contenu des input remplis par l'utilisateur
+
+                    const patternAttr = champs[i].getAttribute("pattern");
+                    if (patternAttr) {
+                        const regle = new RegExp(patternAttr);
+                        if (!regle.test(champs[i].value)) {
+                            alert("Veuillez remplir correctement le champ : " + champs[i].previousElementSibling.textContent);
+                            return;
+                        }
+                    }
                 }
+
+
                 
                 message.style.display = "block";
                 setTimeout(function () {
